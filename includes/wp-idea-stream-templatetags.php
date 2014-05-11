@@ -45,7 +45,7 @@ function wp_idea_stream_desc_edit(){
 }
 
 function wp_idea_stream_new_form(){
-	return get_bloginfo('siteurl').'/feedback/new-idea/';
+	return get_bloginfo('url').'/feedback/new-idea/';
 }
 
 function wp_idea_stream_posted_in_cat(){
@@ -60,7 +60,7 @@ function wp_idea_stream_posted_in_tag(){
 
 function get_author_idea_url($id){
 	$user_info = get_userdata($id);
-	$link = get_bloginfo('siteurl').'/feedback/idea-author/'.$user_info->user_login.'/';
+	$link = get_bloginfo('url').'/feedback/idea-author/'.$user_info->user_login.'/';
 	return $link;
 }
 
@@ -350,31 +350,31 @@ function is_user_allowed_to_feature_ideas(){
 }
 
 function is_new_idea(){
-	if(ereg('feedback/new-idea', $_SERVER['REQUEST_URI'])){
+	if(strpos( $_SERVER['REQUEST_URI'], 'feedback/new-idea' )){
 		return true;
 	}
 	else return false;
 }
 function is_all_ideas(){
-	if(ereg('feedback/all-ideas', $_SERVER['REQUEST_URI'])){
+	if(strpos( $_SERVER['REQUEST_URI'], 'feedback/all-ideas' )){
 		return true;
 	}
 	else return false;
 }
 function is_featured_ideas(){
-	if(ereg('feedback/featured-ideas', $_SERVER['REQUEST_URI'])){
+	if(strpos( $_SERVER['REQUEST_URI'], 'feedback/featured-ideas' )){
 		return true;
 	}
 	else return false;
 }
 function is_idea_author(){
-	if(ereg('feedback/idea-author', $_SERVER['REQUEST_URI'])){
+	if(strpos( $_SERVER['REQUEST_URI'], 'feedback/idea-author' )){
 		return true;
 	}
 	else return false;
 }
 function is_best_ideas(){
-	if(ereg('feedback/best-ideas', $_SERVER['REQUEST_URI'])){
+	if(strpos( $_SERVER['REQUEST_URI'], 'feedback/best-ideas' )){
 		return true;
 	}
 	else return false;
@@ -409,7 +409,7 @@ function wp_is_fix_css_editor(){
 	if( 3.4 <= wp_is_get_major_wp_version() ) {
 		
 		if( is_multisite() )
-			$url = get_blog_option(1, 'siteurl');
+			$url = get_blog_option(1, 'url');
 			
 		else
 			$url = site_url();

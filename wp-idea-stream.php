@@ -260,13 +260,13 @@ add_action('wp_head', "wp_idea_stream_add_catandtag_feed");
 function wp_idea_stream_add_catandtag_feed(){
 	if(get_query_var('category-ideas')){
 		$title = get_bloginfo('sitename') ." &raquo; ".get_query_var('category-ideas');
-		$feed = get_bloginfo('siteurl') . $_SERVER['REQUEST_URI'] .'feed/';
+		$feed = get_bloginfo('url') . $_SERVER['REQUEST_URI'] .'feed/';
 	}
 	if(get_query_var('tag-ideas')){
 		$title = get_bloginfo('sitename') ." &raquo; ".get_query_var('tag-ideas');
-		$feed = get_bloginfo('siteurl') . $_SERVER['REQUEST_URI'] .'feed/';
+		$feed = get_bloginfo('url') . $_SERVER['REQUEST_URI'] .'feed/';
 	} 
-	if($feed){
+	if(!empty($feed)){
 		?>
 		<link rel="alternate" type="application/rss+xml" title="<?php echo $title;?>" href="<?php echo $feed;?>">
 		<?php
@@ -726,16 +726,16 @@ add_filter( 'the_posts', 'wp_idea_stream_fix_the_posts_on_activity_front' );
 function wp_idea_stream_adminbar_menu($wp_admin_bar){
 	if(is_user_logged_in()){
 		global $current_user;
-		$wp_admin_bar->add_menu( array( 'id' => 'wpideastream', 'title' => __('IdeaStream','wp-idea-stream'), 'href' => get_bloginfo('siteurl').'/feedback/all-ideas/' ) );
-		$wp_admin_bar->add_menu( array( 'parent' => 'wpideastream', 'title' => __('All Ideas','wp-idea-stream'), 'href' => get_bloginfo('siteurl').'/feedback/all-ideas/' ) );
+		$wp_admin_bar->add_menu( array( 'id' => 'wpideastream', 'title' => __('IdeaStream','wp-idea-stream'), 'href' => get_bloginfo('url').'/feedback/all-ideas/' ) );
+		$wp_admin_bar->add_menu( array( 'parent' => 'wpideastream', 'title' => __('All Ideas','wp-idea-stream'), 'href' => get_bloginfo('url').'/feedback/all-ideas/' ) );
 		$wp_admin_bar->add_menu( array( 'parent' => 'wpideastream', 'title' => __('My Ideas','wp-idea-stream'), 'href' => get_author_idea_url($current_user->ID) ) );
-		$wp_admin_bar->add_menu( array( 'parent' => 'wpideastream', 'title' => __('Featured Ideas','wp-idea-stream'), 'href' => get_bloginfo('siteurl').'/feedback/featured-ideas/' ) );
-		$wp_admin_bar->add_menu( array( 'parent' => 'wpideastream', 'title' => __('Best Ideas','wp-idea-stream'), 'href' => get_bloginfo('siteurl').'/feedback/best-ideas/' ) );
-		$wp_admin_bar->add_menu( array( 'parent' => 'wpideastream', 'title' => __('New Idea','wp-idea-stream'), 'href' => get_bloginfo('siteurl').'/feedback/new-idea/' ) );
+		$wp_admin_bar->add_menu( array( 'parent' => 'wpideastream', 'title' => __('Featured Ideas','wp-idea-stream'), 'href' => get_bloginfo('url').'/feedback/featured-ideas/' ) );
+		$wp_admin_bar->add_menu( array( 'parent' => 'wpideastream', 'title' => __('Best Ideas','wp-idea-stream'), 'href' => get_bloginfo('url').'/feedback/best-ideas/' ) );
+		$wp_admin_bar->add_menu( array( 'parent' => 'wpideastream', 'title' => __('New Idea','wp-idea-stream'), 'href' => get_bloginfo('url').'/feedback/new-idea/' ) );
 	}
 }
 
-add_action( 'admin_bar_menu', 'wp_idea_stream_adminbar_menu',999 );
+//add_action( 'admin_bar_menu', 'wp_idea_stream_adminbar_menu',999 );
 
 add_action('admin_menu','wp_idea_stream_options_menu');
 
@@ -752,7 +752,8 @@ add_action('admin_print_styles','wp_idea_stream_print_admin_css');
 
 function wp_idea_stream_print_admin_css(){
 	global $post;
-	if($_GET['page']=="ideastream-options" || $_GET['post_type']=="ideas" || get_post_type($post->ID)=="ideas"){
+
+	if(!empty($_GET['page'])=="ideastream-options" || !empty($_GET['post_type'])=="ideas" ){
 		wp_enqueue_style('ideastream-admin-css', WP_IDEA_STREAM_PLUGIN_URL.'/css/admin.css');
 	}
 }
